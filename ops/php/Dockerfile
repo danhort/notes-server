@@ -1,6 +1,6 @@
 FROM php:7.3.5-fpm
      
-RUN apt-get update && apt-get install -y libmcrypt-dev \
+RUN apt-get update && apt-get install -y libmcrypt-dev git \
     mysql-client libmagickwand-dev --no-install-recommends \
     && pecl install imagick mcrypt-1.0.2 \
     && docker-php-ext-enable imagick mcrypt \
