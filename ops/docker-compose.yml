@@ -1,0 +1,58 @@
+version: '3.5'
+
+services:
+    nginx: 
+        build: ./nginx
+        env_file: ./docker.env
+        volumes:
+            - ../src:/var/www
+        ports:
+            - 443:443
+        tty: true
+
+    php:
+        build: ./php
+        env_file: ./docker.env
+        volumes:
+            - ../src:/var/www
+            - ./php/conf.d/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+            - ~/.ssh:/root/.ssh
+        tty: true
+        
+
+    mysql:
+        build: ./mysql
+        env_file: ./docker.env
+        ports:
+           - 3306:3306
+        volumes:
+            - mysql:/var/lib/mysql
+            - ./mysqldump:/mysqldump
+        tty: true
+        
+
+    phpmyadmin:
+        build: ./phpmyadmin
+        env_file:
+            - ./docker.env
+        ports:
+            - 8080:80
+
+    redis:
+        image: redis:3.2-alpine
+        env_file: ./docker.env
+        volumes:
+            - redis:/data
+        tty: true
+
+    maildev:
+        image: djfarrelly/maildev
+        env_file: ./docker.env
+        depends_on:
+        - php
+        ports:
+        - 1080:80
+
+volumes:
+    mysql: {}
+    redis: {}

@@ -1,0 +1,3 @@
+mysqldump/*
+!mysqldump/.keep
+docker.env
